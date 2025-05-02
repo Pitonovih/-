@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CveFinder Link Tree</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#0a0a0a',
+                        foreground: '#fafafa',
+                        primary: '#A3E635',
+                        muted: '#71717a',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        };
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        .title-gradient {
+            background: linear-gradient(45deg, #A3E635 0%, #4d7c0f 100%);
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            text-shadow: 0 0 40px rgba(163, 230, 53, 0.4);
+        }
+
+        .link-item {
+            background: rgba(163, 230, 53, 0.05);
+            border: 1px solid rgba(163, 230, 53, 0.15);
+            backdrop-filter: blur(8px);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .link-item:hover {
+            transform: translateY(-2px);
+            background: rgba(163, 230, 53, 0.1);
+            border-color: #A3E635;
+            box-shadow: 0 4px 20px rgba(163, 230, 53, 0.1);
+        }
+
+        .social-links {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .rotate-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground min-h-screen flex flex-col">
+    <main class="text-center space-y-6 max-w-2xl mx-auto p-6 flex-grow">
+        <h1 class="text-4xl font-bold sm:text-5xl md:text-6xl mt-12">
+            <span class="title-gradient font-semibold">CveFinder</span>
+            <span class="block text-xl mt-3 text-muted">Link Tree</span>
+        </h1>
+
+        <p class="text-lg sm:text-xl text-muted mb-8">
+            Cybersecurity Resources Hub
+        </p>
+
+        <div class="space-y-3" id="linksContainer"></div>
+    </main>
+
+    <footer class="py-4 bg-background/80 mt-auto backdrop-blur-sm">
+        <p class="text-xs text-muted transition-colors hover:text-primary">
+            © 2025 pitonov • Secure Connections
+        </p>
+    </footer>
+
+    <script>
+        const linksConfig = {
+            mainLinks: [
+                {
+                    title: "Patched",
+                    url: "https://patched.to/User/cvefinder",
+                    icon: "fa-shield-halved"
+                },
+                {
+                    title: "EndWay",
+                    url: "https://endway.org/members/sqan7.17610/",
+                    icon: "fa-user-secret"
+                },
+                {
+                    title: "Cracked",
+                    url: "https://cracked.sh/sqan7",
+                    icon: "fa-unlock"
+                },
+                {
+                    title: "Xss",
+                    url: "https://xss.is",
+                    icon: "fa-bug"
+                }
+            ],
+            
+            socialLinks: [
+                {
+                    title: "Telegram",
+                    url: "http://t.me/cvefinder",
+                    icon: "fa-paper-plane"
+                },
+                {
+                    title: "Channel",
+                    url: "https://t.me/+APVc6_okxpJiYTgy",
+                    icon: "fa-broadcast-tower"
+                },
+                {
+                    title: "Vouches",
+                    url: "http://t.me/reviews_sqan7",
+                    icon: "fa-star"
+                }
+            ]
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('linksContainer');
+            
+            linksConfig.mainLinks.forEach(link => createLinkElement(link, container));
+            
+            container.appendChild(createMoreButton());
+            
+            const socialContainer = document.createElement('div');
+            socialContainer.id = 'socialLinks';
+            socialContainer.className = 'social-links space-y-3';
+            linksConfig.socialLinks.forEach(link => createLinkElement(link, socialContainer));
+            container.appendChild(socialContainer);
+        });
+
+        function createLinkElement(linkData, container) {
+            const link = document.createElement('a');
+            link.href = linkData.url;
+            link.className = 'link-item rounded-lg p-4 flex items-center justify-center gap-2';
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            
+            link.innerHTML = `
+                <i class="fas ${linkData.icon} text-primary text-lg"></i>
+                <span class="text-primary font-medium">${linkData.title}</span>
+            `;
+            
+            container.appendChild(link);
+        }
+
+        function createMoreButton() {
+            const button = document.createElement('button');
+            button.className = 'link-item w-full p-4';
+            button.innerHTML = `
+                <div class="flex items-center justify-center gap-2">
+                    <span class="text-primary font-medium">More Links</span>
+                    <i class="fas fa-chevron-down text-primary text-sm transition-transform"></i>
+                </div>
+            `;
+
+            button.addEventListener('click', () => {
+                const socialLinks = document.getElementById('socialLinks');
+                const icon = button.querySelector('i');
+                socialLinks.classList.toggle('social-links');
+                socialLinks.style.maxHeight = socialLinks.style.maxHeight ? null : '500px';
+                icon.classList.toggle('rotate-icon');
+            });
+
+            return button;
+        }
+    </script>
+</body>
+</html>
